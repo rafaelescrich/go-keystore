@@ -11,7 +11,6 @@ These instructions will get you a copy of the project up and running on your loc
 Go version 1.5 at least
 Some linux distro with make
 
-
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
