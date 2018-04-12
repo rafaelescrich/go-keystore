@@ -12,6 +12,8 @@ import (
 // Salt is hardcoded
 const Salt = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"
 
+// TODO: Every time a new nonce is created have to save on db
+
 // Nonce to use in encrypt/decrypt AES GCM
 const Nonce = "64a9433eae7ccceee2fc0eda"
 
