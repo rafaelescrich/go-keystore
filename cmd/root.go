@@ -10,7 +10,8 @@ var rootCmd = &cobra.Command{
 	Use:   "go-keystore",
 	Short: "Go Keystore is a storage for your keys",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello")
+		// TODO: verify if first time (hasDB?)
+		// then if not first time asks for password
 	},
 }
 
