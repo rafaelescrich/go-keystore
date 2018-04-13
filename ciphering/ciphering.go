@@ -16,7 +16,7 @@ const Salt = "The Times 03/Jan/2009 Chancellor on brink of second bailout for ba
 // GenerateMasterKey is the method to generate a key from the salt and
 // password
 func GenerateMasterKey(password string) []byte {
-	return pbkdf2.Key([]byte(password), []byte(Salt), 4096, 32, sha512.New)
+	return pbkdf2.Key([]byte(password), []byte(Salt), 64000, 32, sha512.New)
 }
 
 // GenerateNonce generates new nonce to be used on encrypt aes gcm
