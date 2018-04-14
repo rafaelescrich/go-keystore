@@ -8,13 +8,6 @@ import (
 	"github.com/rafaelescrich/go-keystore/database"
 )
 
-func fileExists(filename string) bool {
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return false
-	}
-	return true
-}
-
 func main() {
 
 	if len(os.Getenv("GOMAXPROCS")) == 0 {
@@ -37,14 +30,48 @@ func main() {
 		Name: "createkey",
 		Help: "creates new key and saves on db",
 		Func: func(c *ishell.Context) {
-			// Prints with args
-			// if c.Args < 1 {
+			c.ShowPrompt(false)
+			defer c.ShowPrompt(true)
 
-			// } else {
-			// 	if filesExists(c.Args) {
-			// 		// TODO: Encrypt file and save key
-			// 	}
-			// }
+			c.Println("Insert password to generate master key:")
+
+			// prompt for input
+			c.Print("Password: ")
+			password := c.ReadPassword()
+
+			// ciphering.
+			// do something with username and password
+			c.Println("Your input is: " + password + ".")
+
+		},
+	})
+
+	shell.AddCmd(&ishell.Cmd{
+		Name: "encryptfile",
+		Help: "creates new encrypted file",
+		Func: func(c *ishell.Context) {
+			c.ShowPrompt(false)
+			defer c.ShowPrompt(true)
+
+			c.Println("Insert filename to encrypt:")
+
+			// prompt for input
+			c.Print("Filename: ")
+			filename := c.ReadLine()
+
+			c.Println("Choose a key from your keystore:")
+
+			// prints keys
+			// if none return error
+
+			// choose key
+			// creates new encrypted file
+			// deletes original file
+
+			// ciphering.
+			// do something with username and password
+			c.Println("Your input is: " + filename + ".")
+
 		},
 	})
 
