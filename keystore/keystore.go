@@ -6,8 +6,8 @@ var masterkey []byte
 
 // Keystore holds the file name and its key
 type Keystore struct {
-	Filename string
 	Key      string
+	Filename string
 }
 
 // FileExists return true if a file with that name exists
