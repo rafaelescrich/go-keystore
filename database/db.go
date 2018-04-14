@@ -24,10 +24,10 @@ func InitDB() *BoltDB {
 	return &BoltDB{db}
 }
 
-// Insert saves on satabase a key value pair
-func (db BoltDB) Insert(key string, value string) error {
+// Insert saves on daatabase a key value pair and the bucket name is the pbkdf2 master key
+func (db BoltDB) Insert(key string, value string, bucket []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
-		b, err := tx.CreateBucketIfNotExists([]byte("keyBucket"))
+		b, err := tx.CreateBucketIfNotExists(bucket)
 		if err != nil {
 			return err
 		}
