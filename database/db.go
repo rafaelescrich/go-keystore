@@ -26,7 +26,7 @@ func InitDB() *BoltDB {
 	return &BoltDB{db}
 }
 
-// Insert saves on daatabase a key value pair and the bucket name is the pbkdf2 master key
+// Insert a key value pair in the db with the bucket name being the pbkdf2 master key
 func (db BoltDB) Insert(keystore keystore.Keystore, bucket []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists(bucket)

@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/abiosoft/ishell"
+	"github.com/rafaelescrich/go-keystore/controller"
+	"github.com/rafaelescrich/go-keystore/keystore"
 )
 
 var shell *ishell.Shell
@@ -47,7 +49,7 @@ func addCmd(shell *ishell.Shell) {
 	})
 
 	shell.AddCmd(&ishell.Cmd{
-		Name: "deleteKey",
+		Name: "deletekey",
 		Help: "deletes key from db",
 		Func: deleteKey(),
 	})
@@ -58,6 +60,31 @@ func addCmd(shell *ishell.Shell) {
 		Func: listKeys(),
 	})
 
+	shell.AddCmd(&ishell.Cmd{
+		Name: "insertpwd",
+		Help: "insert password",
+		Func: insertPwd(),
+	})
+
+}
+
+func insertPwd() func(*ishell.Context) {
+	return func(c *ishell.Context) {
+		c.ShowPrompt(false)
+		defer c.ShowPrompt(true)
+
+		c.Println("Insert password to generate master key:")
+		// prompt for input
+		c.Print("Password: ")
+		password := c.ReadPassword()
+
+		err := controller.CreateMK(password)
+		if err != nil {
+			c.Println(err)
+		}
+
+		c.Println("Your password is: " + password)
+	}
 }
 
 func createKey() func(*ishell.Context) {
@@ -65,15 +92,11 @@ func createKey() func(*ishell.Context) {
 		c.ShowPrompt(false)
 		defer c.ShowPrompt(true)
 
-		c.Println("Insert password to generate master key:")
+		if !keystore.MasterkeyExists() {
+			c.Println("There is no master key, you should run insertpwd")
+		} else {
 
-		// prompt for input
-		c.Print("Password: ")
-		password := c.ReadPassword()
-
-		// ciphering.
-		// do something with username and password
-		c.Println("Your input is: " + password + ".")
+		}
 
 	}
 }
@@ -83,23 +106,27 @@ func deleteKey() func(*ishell.Context) {
 		c.ShowPrompt(false)
 		defer c.ShowPrompt(true)
 
-		c.Println("Insert key to be deleted:")
-
-		// TODO: list keys
-
-		// prompt for input
-		c.Print("Key number: ")
-		key := c.ReadLine()
-
-		// Are you sure:
-		c.Print("Are you sure? (y/n)")
-		yn := c.ReadLine()
-
-		if yn != "y" {
-			c.Println("Delete key was cancelled")
+		if !keystore.MasterkeyExists() {
+			c.Println("There is no master key!")
 		} else {
-			// TODO: delete key
-			c.Println("Your input is: " + key + ".")
+			c.Println("Insert key to be deleted:")
+
+			// TODO: list keys
+
+			// prompt for input
+			c.Print("Key number: ")
+			key := c.ReadLine()
+
+			// Are you sure:
+			c.Print("Are you sure? (y/n)")
+			yn := c.ReadLine()
+
+			if yn != "y" {
+				c.Println("Delete key was cancelled")
+			} else {
+				// TODO: delete key
+				c.Println("Your input is: " + key + ".")
+			}
 		}
 
 	}

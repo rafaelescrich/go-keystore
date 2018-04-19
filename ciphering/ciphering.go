@@ -4,10 +4,9 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"crypto/sha512"
 	"io"
 
-	"golang.org/x/crypto/pbkdf2"
+	"github.com/golang/crypto/argon2"
 )
 
 // Salt is hardcoded
@@ -16,7 +15,13 @@ const Salt = "The Times 03/Jan/2009 Chancellor on brink of second bailout for ba
 // GenerateMasterKey is the method to generate a key from the salt and
 // password
 func GenerateMasterKey(password string) []byte {
-	return pbkdf2.Key([]byte(password), []byte(Salt), 64000, 32, sha512.New)
+	// The draft RFC recommends time=3, and memory=32*1024
+	// is a sensible number. If using that amount of memory (32 MB) is
+	// not possible in some contexts then the time parameter can be increased
+	//  to compensate.
+	// Key(password, salt []byte, time, memory uint32, threads uint8, keyLen uint32)
+	return argon2.Key([]byte(password), []byte(Salt), 3, 32*1024, 4, 32)
+
 }
 
 // GenerateNonce generates new nonce to be used on encrypt aes gcm

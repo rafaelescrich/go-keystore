@@ -2,7 +2,8 @@ package keystore
 
 import "os"
 
-var masterkey []byte
+// MasterKey holds the mk while the program is running
+var MasterKey []byte
 
 // Keystore holds the file name and its key
 type Keystore struct {
@@ -20,5 +21,5 @@ func FileExists(filename string) bool {
 
 // MasterkeyExists returns true if master key exists
 func MasterkeyExists() bool {
-	return masterkey != nil
+	return MasterKey != nil
 }
