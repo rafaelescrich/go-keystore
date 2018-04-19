@@ -30,7 +30,7 @@ Then if everything runned smoothly you should have a binary
 To run it just type
 
 ```
-./go-keytore
+./go-keystore
 ```
 
 ## Running the tests
@@ -39,7 +39,7 @@ Explain how to run the automated tests for this system
 
 ## Built With
 
-* [Cobra](https://github.com/spf13/cobra) - A Commander for modern Go CLI interactions
+* [IShell](https://github.com/abiosoft/ishell) - Library for creating interactive cli applications.
 * [BoltDB](https://github.com/boltdb/bolt) - An embedded key/value database for Go.
 
 ## Author

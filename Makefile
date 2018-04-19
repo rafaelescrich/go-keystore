@@ -20,7 +20,7 @@ run:
 		$(GOBUILD) -o $(BINARY_NAME) -v ./...
 		./$(BINARY_NAME)
 deps:
-		$(GOGET) github.com/spf13/cobra
+		$(GOGET) github.com/abiosoft/ishell
 		$(GOGET) github.com/boltdb/bolt
 
 
