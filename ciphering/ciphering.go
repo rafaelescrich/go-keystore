@@ -4,7 +4,6 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"io"
 
 	"github.com/golang/crypto/argon2"
 )
@@ -25,13 +24,14 @@ func GenerateMasterKey(password string) []byte {
 }
 
 // GenerateNonce generates new nonce to be used on encrypt aes gcm
-func GenerateNonce() ([]byte, error) {
-	// Never use more than 2^32 random nonces with a given key because of the risk of a repeat.
-	nonce := make([]byte, 12)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+func GenerateNonce(n int) ([]byte, error) {
+	b := make([]byte, n)
+	_, err := rand.Read(b)
+	if err != nil {
 		return nil, err
 	}
-	return nonce, nil
+
+	return b, nil
 }
 
 // EncryptAESGCM encrypt plaintext with the key in aes gcm
