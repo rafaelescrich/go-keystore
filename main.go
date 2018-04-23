@@ -3,12 +3,12 @@ package main
 import (
 	"github.com/rafaelescrich/go-keystore/cfg"
 	"github.com/rafaelescrich/go-keystore/cmd"
-	"github.com/rafaelescrich/go-keystore/database"
+	"github.com/rafaelescrich/go-keystore/controller"
 )
 
 func main() {
 
 	cfg.SetMaxProcs()
-	database.InitDB()
+	controller.InitDB()
 	cmd.Run()
 }

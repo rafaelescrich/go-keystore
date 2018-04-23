@@ -2,8 +2,6 @@ package database
 
 import (
 	"errors"
-	"fmt"
-	"os"
 
 	"github.com/boltdb/bolt"
 	"github.com/rafaelescrich/go-keystore/keystore"
@@ -15,25 +13,28 @@ type BoltDB struct {
 }
 
 // InitDB opens or create db file
-func InitDB() *BoltDB {
+func InitDB() (*BoltDB, error) {
 
 	db, err := bolt.Open("keystore.db", 0600, nil)
 	if err != nil {
-		fmt.Printf("BoltDB Error: %s \r\n", err)
-		os.Exit(1)
+		return nil, err
 	}
 
-	return &BoltDB{db}
+	return &BoltDB{db}, nil
 }
 
 // Insert a key value pair in the db with the bucket name being the pbkdf2 master key
-func (db BoltDB) Insert(keystore keystore.Keystore, bucket []byte) error {
+func (db BoltDB) Insert(ks keystore.Keystore, mk []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
-		b, err := tx.CreateBucketIfNotExists(bucket)
+		b, err := tx.CreateBucketIfNotExists(mk)
 		if err != nil {
 			return err
 		}
-		err = b.Put([]byte(keystore.Key), []byte(keystore.Filename))
+		sks, err := keystore.SerializeKeystore(ks)
+		if err != nil {
+			return err
+		}
+		err = b.Put(ks.Key, sks)
 		if err != nil {
 			return err
 		}
@@ -47,10 +48,10 @@ func (db BoltDB) Insert(keystore keystore.Keystore, bucket []byte) error {
 }
 
 // Delete the key from database
-func (db BoltDB) Delete(key string) error {
+func (db BoltDB) Delete(key []byte, mk []byte) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte("keyBucket"))
-		return bucket.Delete([]byte(key))
+		bucket := tx.Bucket(mk)
+		return bucket.Delete(key)
 	})
 }
 
@@ -61,9 +62,13 @@ func (db BoltDB) GetAllKeys(masterkey []byte) ([]keystore.Keystore, error) {
 	err := db.DB.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(masterkey)
 		b.ForEach(func(k, v []byte) error {
+			dks, err := keystore.DeserializeKeystore(v)
+			if err != nil {
+				return err
+			}
 			keys = append(keys, keystore.Keystore{
-				Key:      string(k),
-				Filename: string(v),
+				Key:      dks.Key,
+				Filename: dks.Filename,
 			})
 			return nil
 		})

@@ -1,14 +1,19 @@
 package keystore
 
-import "os"
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
 
 // MasterKey holds the mk while the program is running
 var MasterKey []byte
 
 // Keystore holds the file name and its key
 type Keystore struct {
-	Key      string
+	Key      []byte
 	Filename string
+	Nonce    []byte
 }
 
 // FileExists return true if a file with that name exists
@@ -22,4 +27,24 @@ func FileExists(filename string) bool {
 // MasterkeyExists returns true if master key exists
 func MasterkeyExists() bool {
 	return MasterKey != nil
+}
+
+// SerializeKeystore serialize a keystore
+func SerializeKeystore(ks Keystore) ([]byte, error) {
+	js, err := json.Marshal(ks)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return js, nil
+}
+
+// DeserializeKeystore returns a struct
+func DeserializeKeystore(js []byte) (Keystore, error) {
+	var ks Keystore
+	err := json.Unmarshal(js, ks)
+	if err != nil {
+		return Keystore{}, err
+	}
+	return ks, nil
 }
