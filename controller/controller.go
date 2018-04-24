@@ -42,3 +42,8 @@ func GetAllKeys() ([]keystore.Keystore, error) {
 	}
 	return keys, nil
 }
+
+// CreateKey creates and insert new key
+func CreateKey() {
+
+}

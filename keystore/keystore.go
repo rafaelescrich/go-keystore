@@ -11,10 +11,12 @@ var MasterKey []byte
 
 // Keystore holds the file name and its key
 type Keystore struct {
-	Key      []byte
-	Filename string
-	Nonce    []byte
+	Key   []byte
+	Nonce []byte
 }
+
+// CipheredFile is a map between filename and key
+type CipheredFile map[string][]byte
 
 // FileExists return true if a file with that name exists
 func FileExists(filename string) bool {

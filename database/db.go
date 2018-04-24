@@ -47,6 +47,8 @@ func (db BoltDB) Insert(ks keystore.Keystore, mk []byte) error {
 	return nil
 }
 
+// TODO: func InsertCipheredFile
+
 // Delete the key from database
 func (db BoltDB) Delete(key []byte, mk []byte) error {
 	return db.DB.Update(func(tx *bolt.Tx) error {
