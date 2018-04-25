@@ -50,6 +50,7 @@ func TestEncryptAESGCM(t *testing.T) {
 
 	expectedResult := "e6666e7047ac9c0a502c86aac59d420a343df303766cc9a93e1990357855227f"
 
+	t.Logf("Plaintext: %s", string(plaintext))
 	t.Logf("Ciphertext: %s", hex.EncodeToString(ciphertext))
 
 	if expectedResult != hex.EncodeToString(ciphertext) {
@@ -77,12 +78,13 @@ func TestDecryptAESGCM(t *testing.T) {
 
 	expectedResult := "exampleplaintext"
 
-	t.Logf("Plaintext: %s", hex.EncodeToString(plaintext))
+	t.Logf("Plaintext: %s", string(plaintext))
+	t.Logf("Ciphertext: %s", hex.EncodeToString(ciphertext))
 
-	if expectedResult != hex.EncodeToString(plaintext) {
-		t.Error("Expected result is different from result")
-	} else {
+	if expectedResult == string(plaintext) {
 		t.Log("TEST PASSED")
+	} else {
+		t.Error("Expected result is different from result")
 	}
 
 }
