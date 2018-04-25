@@ -15,8 +15,13 @@ type Keystore struct {
 	Nonce []byte
 }
 
+// Filename holds the file name
+type Filename struct {
+	Fn string
+}
+
 // CipheredFile is a map between filename and key
-type CipheredFile map[string][]byte
+type CipheredFile map[Filename]Keystore
 
 // FileExists return true if a file with that name exists
 func FileExists(filename string) bool {

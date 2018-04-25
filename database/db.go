@@ -24,17 +24,13 @@ func InitDB() (*BoltDB, error) {
 }
 
 // Insert a key value pair in the db with the bucket name being the pbkdf2 master key
-func (db BoltDB) Insert(ks keystore.Keystore, mk []byte) error {
+func (db BoltDB) Insert(cT keystore.CipheredFile, mk []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists(mk)
 		if err != nil {
 			return err
 		}
-		sks, err := keystore.SerializeKeystore(ks)
-		if err != nil {
-			return err
-		}
-		err = b.Put(ks.Key, sks)
+		err = b.Put(cT, cT)
 		if err != nil {
 			return err
 		}
@@ -46,8 +42,6 @@ func (db BoltDB) Insert(ks keystore.Keystore, mk []byte) error {
 	}
 	return nil
 }
-
-// TODO: func InsertCipheredFile
 
 // Delete the key from database
 func (db BoltDB) Delete(key []byte, mk []byte) error {
@@ -69,8 +63,7 @@ func (db BoltDB) GetAllKeys(masterkey []byte) ([]keystore.Keystore, error) {
 				return err
 			}
 			keys = append(keys, keystore.Keystore{
-				Key:      dks.Key,
-				Filename: dks.Filename,
+				Key: dks.Key,
 			})
 			return nil
 		})

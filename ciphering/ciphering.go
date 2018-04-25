@@ -29,21 +29,21 @@ func GenerateNonce(n int) []byte {
 }
 
 // EncryptAESGCM encrypt plaintext with the key in aes gcm
-func EncryptAESGCM(key []byte, nonce []byte, plaintext []byte) ([]byte, []byte, error) {
+func EncryptAESGCM(key []byte, nonce []byte, plaintext []byte) ([]byte, error) {
 	var ciphertext []byte
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, ciphertext, err
+		return ciphertext, err
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, ciphertext, err
+		return ciphertext, err
 	}
 
 	ciphertext = aesgcm.Seal(nil, nonce, plaintext, nil)
-	return ciphertext, nonce, nil
+	return ciphertext, nil
 }
 
 // DecryptAESGCM decrypts a ciphertext with a key
