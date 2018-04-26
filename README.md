@@ -1,6 +1,6 @@
 # Go Keystore
 
-Keystore written in golang to create and store safelly your keys.
+Keystore written in golang to create and store safely your keys.
 
 ## Getting Started
 
@@ -8,8 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Go version 1.5 at least
-Some linux distro with make
+* Go version 1.5 at least
+* Some linux distro with make
 
 ### Installing
 
@@ -35,12 +35,14 @@ To run it just type
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+make test
 
 ## Built With
 
 * [IShell](https://github.com/abiosoft/ishell) - Library for creating interactive cli applications.
 * [BoltDB](https://github.com/boltdb/bolt) - An embedded key/value database for Go.
+* [Argon2](https://github.com/golang/crypto/argon2) - Go supplementary cryptography libraries
+* [Fastrand](https://github.com/NebulousLabs/fastrand) - 10x faster than crypto/rand
 
 ## Author
 
