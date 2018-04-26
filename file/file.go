@@ -88,11 +88,7 @@ func readFile(path string) ([]byte, error) {
 }
 
 func deleteFile(path string) error {
-	// delete file
-	var err = os.Remove(path)
-	if isError(err) {
-		return err
-	}
+	err := os.Remove(path)
 	if err != nil {
 		return err
 	}
