@@ -135,9 +135,9 @@ func encryptFile() func(*ishell.Context) {
 			err := controller.EncryptFile(filename)
 			if err != nil {
 				c.Println(err)
-				c.Print("Error while loading file from disk")
+				c.Println("Error while loading file from disk")
 			} else {
-				c.Print("File ciphered with success!")
+				c.Println("File ciphered with success!")
 			}
 		}
 	}
@@ -160,9 +160,9 @@ func decryptFile() func(*ishell.Context) {
 			err := controller.DecryptFile(filename)
 			if err != nil {
 				c.Println(err)
-				c.Print("Error while loading file from disk")
+				c.Println("Error while loading file from disk")
 			} else {
-				c.Print("File deciphered with success!")
+				c.Println("File deciphered with success!")
 			}
 		}
 	}

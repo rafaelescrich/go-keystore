@@ -31,10 +31,7 @@ func (db BoltDB) Insert(filename []byte, nonce []byte, mk []byte) error {
 			return err
 		}
 		err = b.Put(filename, nonce)
-		if err != nil {
-			return err
-		}
-		return nil
+		return err
 	})
 	if err != nil {
 		return err
@@ -56,17 +53,16 @@ func (db BoltDB) Get(fl []byte, masterkey []byte) ([]byte, error) {
 
 	err := db.DB.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(masterkey)
-		nonce := b.Get(fl)
-		if nonce == nil {
-			err := errors.New("filename not present in db")
-			return err
+		if b == nil {
+
+			return errors.New("bucket not found")
 		}
+		nonce = b.Get(fl)
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
-
 	return nonce, nil
 }
 
