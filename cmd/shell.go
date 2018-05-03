@@ -37,15 +37,15 @@ func print(shell *ishell.Shell) {
 func addCmd(shell *ishell.Shell) {
 
 	shell.AddCmd(&ishell.Cmd{
-		Name: "createkey",
-		Help: "creates new key and saves on db",
-		Func: createKey(),
-	})
-
-	shell.AddCmd(&ishell.Cmd{
 		Name: "encryptfile",
 		Help: "creates new encrypted file",
 		Func: encryptFile(),
+	})
+
+	shell.AddCmd(&ishell.Cmd{
+		Name: "decryptfile",
+		Help: "decrypts file",
+		Func: decryptFile(),
 	})
 
 	shell.AddCmd(&ishell.Cmd{
@@ -87,20 +87,6 @@ func insertPwd() func(*ishell.Context) {
 	}
 }
 
-func createKey() func(*ishell.Context) {
-	return func(c *ishell.Context) {
-		c.ShowPrompt(false)
-		defer c.ShowPrompt(true)
-
-		if !keystore.MasterkeyExists() {
-			c.Println("There is no master key, you should run insertpwd")
-		} else {
-
-		}
-
-	}
-}
-
 func deleteKey() func(*ishell.Context) {
 	return func(c *ishell.Context) {
 		c.ShowPrompt(false)
@@ -137,24 +123,48 @@ func encryptFile() func(*ishell.Context) {
 		c.ShowPrompt(false)
 		defer c.ShowPrompt(true)
 
-		c.Println("Insert filename to encrypt:")
+		if !keystore.MasterkeyExists() {
+			c.Println("There is no master key!")
+		} else {
+			c.Println("Insert filename to encrypt:")
 
-		// prompt for input
-		c.Print("Filename: ")
-		filename := c.ReadLine()
+			// prompt for input
+			c.Print("Filename: ")
+			filename := c.ReadLine()
 
-		c.Println("Choose a key from your keystore:")
+			err := controller.EncryptFile(filename)
+			if err != nil {
+				c.Println(err)
+				c.Print("Error while loading file from disk")
+			} else {
+				c.Print("File ciphered with success!")
+			}
+		}
+	}
 
-		// TODO: prints keys
-		// TODO: if none return error
+}
+func decryptFile() func(*ishell.Context) {
+	return func(c *ishell.Context) {
+		c.ShowPrompt(false)
+		defer c.ShowPrompt(true)
 
-		// TODO: choose key
-		// TODO: creates new encrypted file
-		// TODO: deletes original file
+		if !keystore.MasterkeyExists() {
+			c.Println("There is no master key!")
+		} else {
+			c.Println("Insert filename to decrypt:")
 
-		// TODO: ciphering.
-		// TODO: do something with username and password
-		c.Println("Your input is: " + filename + ".")
+			// prompt for input
+			c.Print("Filename: ")
+			filename := c.ReadLine()
+
+			err := controller.DecryptFile(filename)
+			if err != nil {
+				c.Println(err)
+				c.Print("Error while loading file from disk")
+			} else {
+				c.Print("File deciphered with success!")
+			}
+		}
 	}
 
 }

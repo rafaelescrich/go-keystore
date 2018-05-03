@@ -1,8 +1,8 @@
 package file
 
 import (
-	"fmt"
-	"io"
+	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/rafaelescrich/go-keystore/keystore"
@@ -16,88 +16,29 @@ type Filename struct {
 // CipheredFile is a map between filename and key
 type CipheredFile map[Filename]keystore.Keystore
 
-func createFile(path string) error {
-	// detect if file exists
-	var _, err = os.Stat(path)
-
-	// create file if not exists
-	if os.IsNotExist(err) {
-		var file, err = os.Create(path)
-		if isError(err) {
-			return err
-		}
-		defer file.Close()
-	}
-
-	return err
-}
-
-func writeFile(path string, content []byte) error {
-	// open file using READ & WRITE permission
-	var file, err = os.OpenFile(path, os.O_RDWR, 0644)
-	if isError(err) {
-		return err
-	}
-	defer file.Close()
-
-	// write some text line-by-line to file
-	_, err = file.Write(content)
-	if isError(err) {
-		return err
-	}
-	// save changes
-	err = file.Sync()
-	if isError(err) {
-		return err
-	}
-
+// WriteFile writes a slice of bytes to a file
+func WriteFile(path string, content []byte) error {
+	err := ioutil.WriteFile(path, content, 0644)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func readFile(path string) ([]byte, error) {
-	var content = make([]byte, 1024)
-	// re-open file
-	var file, err = os.OpenFile(path, os.O_RDWR, 0644)
-	if isError(err) {
-		return content, err
-	}
-	defer file.Close()
-
-	// read file, line by line
-
-	for {
-		_, err = file.Read(content)
-		// break if finally arrived at end of file
-		if err == io.EOF {
-			break
-		}
-		// break if error occured
-		if err != nil && err != io.EOF {
-			isError(err)
-			break
-		}
-	}
+// ReadFile returns the content of a file
+func ReadFile(path string) ([]byte, error) {
+	content, err := ioutil.ReadFile(path)
 	if err != nil {
-		return content, err
+		log.Fatal(err)
 	}
-	return content, nil
+	return content, err
 }
 
-func deleteFile(path string) error {
+// DeleteFile deletes a file from hard drive
+func DeleteFile(path string) error {
 	err := os.Remove(path)
 	if err != nil {
 		return err
 	}
 	return nil
-}
-
-func isError(err error) bool {
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	return (err != nil)
 }

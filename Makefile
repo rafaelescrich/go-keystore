@@ -20,8 +20,10 @@ run:
 		$(GOBUILD) -o $(BINARY_NAME) -v ./...
 		./$(BINARY_NAME)
 deps:
-		$(GOGET) github.com/abiosoft/ishell
 		$(GOGET) github.com/boltdb/bolt
+		$(GOGET) github.com/abiosoft/ishell
+		$(GOGET) github.com/NebulousLabs/fastrand
+		$(GOGET) github.com/golang/crypto/argon2
 
 
 # Cross compilation

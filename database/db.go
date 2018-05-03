@@ -24,19 +24,18 @@ func InitDB() (*BoltDB, error) {
 }
 
 // Insert a key value pair in the db with the bucket name being the pbkdf2 master key
-func (db BoltDB) Insert(cT keystore.CipheredFile, mk []byte) error {
+func (db BoltDB) Insert(filename []byte, nonce []byte, mk []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists(mk)
 		if err != nil {
 			return err
 		}
-		err = b.Put(cT, cT)
+		err = b.Put(filename, nonce)
 		if err != nil {
 			return err
 		}
 		return nil
 	})
-
 	if err != nil {
 		return err
 	}
@@ -49,6 +48,26 @@ func (db BoltDB) Delete(key []byte, mk []byte) error {
 		bucket := tx.Bucket(mk)
 		return bucket.Delete(key)
 	})
+}
+
+// Get returns nonce from filename
+func (db BoltDB) Get(fl []byte, masterkey []byte) ([]byte, error) {
+	var nonce []byte
+
+	err := db.DB.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(masterkey)
+		nonce := b.Get(fl)
+		if nonce == nil {
+			err := errors.New("filename not present in db")
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return nonce, nil
 }
 
 // GetAllKeys returns all keys from db

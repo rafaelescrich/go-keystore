@@ -24,11 +24,11 @@ func GenerateMasterKey(password string) []byte {
 }
 
 // GenerateNonce generates new nonce to be used on encrypt aes gcm
-func GenerateNonce(n int) []byte {
-	return fastrand.Bytes(n)
+func GenerateNonce() []byte {
+	return fastrand.Bytes(12)
 }
 
-// EncryptAESGCM encrypt plaintext with the key in aes gcm
+// EncryptAESGCM encrypt plaintext with the mk
 func EncryptAESGCM(key []byte, nonce []byte, plaintext []byte) ([]byte, error) {
 	var ciphertext []byte
 
