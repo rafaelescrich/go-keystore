@@ -24,9 +24,9 @@ func GenerateMasterKey(password string) []byte {
 
 }
 
-// GenerateStreamBytes generates new nonce to be used on encrypt aes gcm
-func GenerateStreamBytes() []byte {
-	stream := make([]byte, 32)
+// GenerateStreamBytes generates new random stream of bytes
+func GenerateStreamBytes(bytes int) []byte {
+	stream := make([]byte, bytes)
 	_, err := rand.Read(stream)
 	if err != nil {
 		fmt.Print(err)

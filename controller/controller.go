@@ -50,14 +50,14 @@ func EncryptFile(fn string) error {
 	if err != nil {
 		return err
 	}
-	nonce := ciphering.GenerateStreamBytes()
-	key := ciphering.GenerateStreamBytes()
+	nonce := ciphering.GenerateStreamBytes(12)
+	key := ciphering.GenerateStreamBytes(16)
 	ks := keystore.Keystore{Key: key, Nonce: nonce}
 	kss, err := keystore.SerializeKeystore(ks)
 	if err != nil {
 		return err
 	}
-	ct, err := ciphering.EncryptAESGCM(kss, nonce, fl)
+	ct, err := ciphering.EncryptAESGCM(key, nonce, fl)
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func EncryptFile(fn string) error {
 	if err != nil {
 		return err
 	}
-	err = db.Insert([]byte(fn), nonce, keystore.MasterKey)
+	err = db.Insert([]byte(fn), kss, keystore.MasterKey)
 	if err != nil {
 		return err
 	}

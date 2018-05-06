@@ -2,7 +2,6 @@ package keystore
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -30,18 +29,17 @@ func MasterkeyExists() bool {
 
 // SerializeKeystore serialize a keystore
 func SerializeKeystore(ks Keystore) ([]byte, error) {
-	js, err := json.Marshal(ks)
+	kss, err := json.Marshal(ks)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
-	return js, nil
+	return kss, nil
 }
 
 // DeserializeKeystore returns a struct
-func DeserializeKeystore(js []byte) (Keystore, error) {
+func DeserializeKeystore(kss []byte) (Keystore, error) {
 	var ks Keystore
-	err := json.Unmarshal(js, ks)
+	err := json.Unmarshal(kss, &ks)
 	if err != nil {
 		return Keystore{}, err
 	}
