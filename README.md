@@ -18,16 +18,17 @@ A step by step series of examples that tell you have to get a development env ru
 Clone the project
 
 ```
-git clone git@github.com:rafaelescrich/go-keystore.git $GOPATH/src/github.com/rafaelescrich/go-keystore
+git clone git@github.com:rafaelescrich/go-keystore.git 
+cd $GOPATH/src/github.com/rafaelescrich/go-keystore
 ```
 
-Build bin with make tool
+Build binary with make tool
 
 ```
 make
 ```
 Then if everything runned smoothly you should have a binary
-To run it just type
+To run it, just type
 
 ```
 ./go-keystore
@@ -41,8 +42,18 @@ make test
 
 * [IShell](https://github.com/abiosoft/ishell) - Library for creating interactive cli applications.
 * [BoltDB](https://github.com/boltdb/bolt) - An embedded key/value database for Go.
-* [Argon2](https://github.com/golang/crypto/argon2) - Go supplementary cryptography libraries
+* [Argon2](https://github.com/golang/crypto/tree/master/argon2) - Go supplementary cryptography libraries
 * [Fastrand](https://github.com/NebulousLabs/fastrand) - 10x faster than crypto/rand
+
+## TODO
+- Testing:
+- [ ] cfg
+- [x] ciphering
+- [ ] cmd
+- [ ] controller
+- [ ] database
+- [ ] file
+- [ ] keystore
 
 ## Author
 
