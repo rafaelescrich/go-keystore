@@ -3,8 +3,9 @@ package ciphering
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/rand"
+	"fmt"
 
-	"github.com/NebulousLabs/fastrand"
 	"github.com/golang/crypto/argon2"
 )
 
@@ -23,9 +24,14 @@ func GenerateMasterKey(password string) []byte {
 
 }
 
-// GenerateNonce generates new nonce to be used on encrypt aes gcm
-func GenerateNonce() []byte {
-	return fastrand.Bytes(12)
+// GenerateStreamBytes generates new nonce to be used on encrypt aes gcm
+func GenerateStreamBytes() []byte {
+	stream := make([]byte, 32)
+	_, err := rand.Read(stream)
+	if err != nil {
+		fmt.Print(err)
+	}
+	return stream
 }
 
 // EncryptAESGCM encrypt plaintext with the mk

@@ -50,8 +50,14 @@ func EncryptFile(fn string) error {
 	if err != nil {
 		return err
 	}
-	nonce := ciphering.GenerateNonce()
-	ct, err := ciphering.EncryptAESGCM(keystore.MasterKey, nonce, fl)
+	nonce := ciphering.GenerateStreamBytes()
+	key := ciphering.GenerateStreamBytes()
+	ks := keystore.Keystore{Key: key, Nonce: nonce}
+	kss, err := keystore.SerializeKeystore(ks)
+	if err != nil {
+		return err
+	}
+	ct, err := ciphering.EncryptAESGCM(kss, nonce, fl)
 	if err != nil {
 		return err
 	}
@@ -69,7 +75,11 @@ func EncryptFile(fn string) error {
 
 // DecryptFile receives a file and decrypts to the original one
 func DecryptFile(fn string) error {
-	nonce, err := db.Get([]byte(fn), keystore.MasterKey)
+	kss, err := db.Get([]byte(fn), keystore.MasterKey)
+	if err != nil {
+		return err
+	}
+	ks, err := keystore.DeserializeKeystore(kss)
 	if err != nil {
 		return err
 	}
@@ -78,7 +88,7 @@ func DecryptFile(fn string) error {
 	if err != nil {
 		return err
 	}
-	pt, err := ciphering.DecryptAESGCM(keystore.MasterKey, nonce, ct)
+	pt, err := ciphering.DecryptAESGCM(ks.Key, ks.Nonce, ct)
 	if err != nil {
 		return err
 	}

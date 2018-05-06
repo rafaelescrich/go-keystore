@@ -43,17 +43,17 @@ make test
 * [IShell](https://github.com/abiosoft/ishell) - Library for creating interactive cli applications.
 * [BoltDB](https://github.com/boltdb/bolt) - An embedded key/value database for Go.
 * [Argon2](https://github.com/golang/crypto/tree/master/argon2) - Go supplementary cryptography libraries
-* [Fastrand](https://github.com/NebulousLabs/fastrand) - 10x faster than crypto/rand
 
 ## TODO
-- Testing:
-- [ ] cfg
-- [x] ciphering
-- [ ] cmd
-- [ ] controller
-- [ ] database
-- [ ] file
-- [ ] keystore
+
+* Testing:
+* [ ] cfg
+* [x] ciphering
+* [ ] cmd
+* [ ] controller
+* [ ] database
+* [ ] file
+* [ ] keystore
 
 ## Author
 

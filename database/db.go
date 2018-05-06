@@ -24,13 +24,13 @@ func InitDB() (*BoltDB, error) {
 }
 
 // Insert a key value pair in the db with the bucket name being the pbkdf2 master key
-func (db BoltDB) Insert(filename []byte, nonce []byte, mk []byte) error {
+func (db BoltDB) Insert(filename []byte, kss []byte, mk []byte) error {
 	err := db.DB.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists(mk)
 		if err != nil {
 			return err
 		}
-		err = b.Put(filename, nonce)
+		err = b.Put(filename, kss)
 		return err
 	})
 	if err != nil {
@@ -49,7 +49,7 @@ func (db BoltDB) Delete(key []byte, mk []byte) error {
 
 // Get returns nonce from filename
 func (db BoltDB) Get(fl []byte, masterkey []byte) ([]byte, error) {
-	var nonce []byte
+	var kss []byte
 
 	err := db.DB.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(masterkey)
@@ -57,13 +57,13 @@ func (db BoltDB) Get(fl []byte, masterkey []byte) ([]byte, error) {
 
 			return errors.New("bucket not found")
 		}
-		nonce = b.Get(fl)
+		kss = b.Get(fl)
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return nonce, nil
+	return kss, nil
 }
 
 // GetAllKeys returns all keys from db
