@@ -35,13 +35,12 @@ func CreateMK(password string) error {
 }
 
 // GetAllKeys returns all keys
-func GetAllKeys() ([]keystore.Keystore, error) {
-	var keys []keystore.Keystore
-	keys, err := db.GetAllKeys(keystore.MasterKey)
+func GetAllKeys() ([]file.CipheredFile, error) {
+	fks, err := db.GetAllKeys(keystore.MasterKey)
 	if err != nil {
 		return nil, err
 	}
-	return keys, nil
+	return fks, nil
 }
 
 // EncryptFile receives a file and encrypts do another one

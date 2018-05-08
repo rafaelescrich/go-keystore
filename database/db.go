@@ -3,8 +3,10 @@ package database
 import (
 	"errors"
 
-	"github.com/boltdb/bolt"
+	"github.com/rafaelescrich/go-keystore/file"
 	"github.com/rafaelescrich/go-keystore/keystore"
+
+	"github.com/boltdb/bolt"
 )
 
 // BoltDB pointer
@@ -67,26 +69,26 @@ func (db BoltDB) Get(fl []byte, masterkey []byte) ([]byte, error) {
 }
 
 // GetAllKeys returns all keys from db
-func (db BoltDB) GetAllKeys(masterkey []byte) ([]keystore.Keystore, error) {
-	keys := []keystore.Keystore{}
-
+func (db BoltDB) GetAllKeys(masterkey []byte) ([]file.CipheredFile, error) {
+	fks := make([]file.CipheredFile, 1, 1)
+	var cf file.CipheredFile
 	err := db.DB.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(masterkey)
 		b.ForEach(func(k, v []byte) error {
-			dks, err := keystore.DeserializeKeystore(v)
+			filename := string(k)
+			key, err := keystore.DeserializeKeystore(v)
 			if err != nil {
 				return err
 			}
-			keys = append(keys, keystore.Keystore{
-				Key: dks.Key,
-			})
+			cf[filename] = key
+			fks = append(fks, cf)
 			return nil
 		})
 		return nil
 	})
 	if err != nil {
-		return keys, errors.New("Error on Get keys from DB, Message: " + err.Error())
+		return fks, errors.New("Error on Get keys from DB, Message: " + err.Error())
 	}
 
-	return keys, nil
+	return fks, nil
 }

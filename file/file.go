@@ -8,13 +8,8 @@ import (
 	"github.com/rafaelescrich/go-keystore/keystore"
 )
 
-// Filename holds the file name
-type Filename struct {
-	Fn string
-}
-
 // CipheredFile is a map between filename and key
-type CipheredFile map[Filename]keystore.Keystore
+type CipheredFile map[string]keystore.Keystore
 
 // WriteFile writes a slice of bytes to a file
 func WriteFile(path string, content []byte) error {

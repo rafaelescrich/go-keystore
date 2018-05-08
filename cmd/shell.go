@@ -175,6 +175,18 @@ func listKeys() func(*ishell.Context) {
 		c.Println("List of keys in DB:")
 
 		// TODO: get all keys from db
+		if !keystore.MasterkeyExists() {
+			c.Println("There is no master key!")
+		} else {
+			fks, err := controller.GetAllKeys()
+			if err != nil {
+				c.Println(err)
+			}
+			for _, fk := range fks {
+				c.Println(fk)
+			}
+
+		}
 
 		// TODO: print keys
 
