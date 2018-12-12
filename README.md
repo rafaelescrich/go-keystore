@@ -2,6 +2,10 @@
 
 Keystore written in golang to create and store safely your keys.
 
+## Status
+
+[![Build Status](https://cloud.drone.io/api/badges/rafaelescrich/go-keystore/status.svg)](https://cloud.drone.io/rafaelescrich/go-keystore)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development, testing or using purposes.
