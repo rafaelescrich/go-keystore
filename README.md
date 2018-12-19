@@ -5,6 +5,7 @@ Keystore written in golang to create and store safely your keys.
 ## Status
 
 [![Build Status](https://cloud.drone.io/api/badges/rafaelescrich/go-keystore/status.svg)](https://cloud.drone.io/rafaelescrich/go-keystore)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frafaelescrich%2Fgo-keystore.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Frafaelescrich%2Fgo-keystore?ref=badge_shield)
 
 ## Getting Started
 
@@ -66,3 +67,6 @@ make test
 ## License
 
 This project is licensed under the GPL v2 License - see the [LICENSE.md](LICENSE.md) file for details
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frafaelescrich%2Fgo-keystore.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Frafaelescrich%2Fgo-keystore?ref=badge_large)
